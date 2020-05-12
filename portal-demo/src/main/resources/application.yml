@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: portal-demo
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+myremote:
+  server:
+    name: portalserver-demo
+    sayHelloworld: /portal-server/sayHelloworld
+sayHelloworldurl: http://${myremote.server.name}/${myremote.server.sayHelloworld}/{name}/{id}
