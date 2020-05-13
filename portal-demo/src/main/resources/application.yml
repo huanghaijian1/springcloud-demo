@@ -13,5 +13,7 @@ myremote:
     name: portalserver-demo
     sayHelloworld: /portal-server/sayHelloworld
     sayHelloworld2: /portal-server/sayHelloworld2
+    sayHelloworld3: /portal-server/sayHelloworld3
 sayHelloworldurl: http://${myremote.server.name}/${myremote.server.sayHelloworld}/{name}/{id}
 sayHelloworldurl2: http://${myremote.server.name}/${myremote.server.sayHelloworld2}/
+sayHelloworldurl3: http://${myremote.server.name}/${myremote.server.sayHelloworld3}

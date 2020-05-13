@@ -19,7 +19,7 @@ public class PortalServerDemo {
 
 
     @RequestMapping("/sayHelloworld/{name}/{id}")
-    @HystrixCommand(fallbackMethod = "defaultSay")
+    //@HystrixCommand(fallbackMethod = "defaultSay")
     public String sayHelloworld(HttpServletRequest request, @PathVariable String name, @PathVariable int id){
 
 

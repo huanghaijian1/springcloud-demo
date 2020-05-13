@@ -1,5 +1,6 @@
 package com.springcloud.gateway.gatewaydemo;
 
+import com.springcloud.gateway.gatewaydemo.resolver.UriKeyResolver;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -14,6 +15,10 @@ public class GatewayDemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayDemoApplication.class, args);
     }
+    @Bean
+    public UriKeyResolver uriKeyResolver(){
+        return new UriKeyResolver();
+    }
 
 //    @Bean
 //    public RouteLocator myRoutes(RouteLocatorBuilder builder) {
@@ -21,17 +26,17 @@ public class GatewayDemoApplication {
 //    }
 
 
-@Bean
-public RouteLocator myRoutes(RouteLocatorBuilder builder) {
-    return builder.routes()
-            .route(p -> p
-                    .path("/get")
-                    .filters(f -> f.addRequestHeader("Hello", "World"))
-                    .uri("http://httpbin.org:80"))
-            .route(p -> p
-                    .host("*.hystrix.com")
-                    .filters(f -> f.hystrix(config -> config.setName("mycmd")))
-                    .uri("http://httpbin.org:80")).build();
-}
+//@Bean
+//public RouteLocator myRoutes(RouteLocatorBuilder builder) {
+//    return builder.routes()
+//            .route(p -> p
+//                    .path("/get")
+//                    .filters(f -> f.addRequestHeader("Hello", "World"))
+//                    .uri("http://httpbin.org:80"))
+//            .route(p -> p
+//                    .host("*.hystrix.com")
+//                    .filters(f -> f.hystrix(config -> config.setName("mycmd")))
+//                    .uri("http://httpbin.org:80")).build();
+//}
 
 }

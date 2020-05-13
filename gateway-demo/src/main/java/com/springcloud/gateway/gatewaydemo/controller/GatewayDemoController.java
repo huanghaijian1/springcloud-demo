@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GatewayDemoController {
 
-    @RequestMapping("/hello")
-    public String hello(){
-        return "hello geteway";
+    @RequestMapping("/fallback")
+    public String hello(String name){
+        return "hello geteway fallback ---" +name;
     }
 }
