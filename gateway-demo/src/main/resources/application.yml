@@ -45,6 +45,19 @@ spring:
           enabled: true
       # 路由（routes：路由，它由唯一标识（ID）、目标服务地址（uri）、一组断言（predicates）和一组过滤器组成（filters）。filters 不是必需参数。）
       routes:
+      - id: route_second
+        uri: lb://portalserver-demo
+        predicates:
+         - Method=GET
+         - Header=serverName,psd
+#         - Host=**.foo.org
+#         - Path=/headers
+#         - Method=GET
+#         - Header=X-Request-Id, \d+
+#         - Query=foo, ba.
+#         - Query=baz
+#         - Cookie=chocolate, ch.p
+#         - After=2018-01-20T06:06:06+08:00[Asia/Shanghai]
       # 路由标识（id：标识，具有唯一性）   综合
       - id: route_all
         # 目标服务地址（uri：地址，请求转发后的地址）
@@ -52,19 +65,27 @@ spring:
         # 路由条件（predicates：断言，匹配 HTTP 请求内容）
         predicates:
         ## 转发地址格式为 uri/routeAll，/all 部分会被下面的过滤器给截取掉
-        - Path=/str/portal-demo/sayHelloworld2
+        - Path=/portal-demo/**
         ## 匹配 GET 请求
         - Method=GET
+        - Header=serverName,pd
         # 过滤器（filters：过滤器，过滤规则）
         filters:
         ## 截取路径位数
-        - StripPrefix=1
+#        - StripPrefix=1
         ## 添加指定参数
         - AddRequestParameter=name, HH&id=12
         ## 熔断
         - name: Hystrix
           args:
-            name: huanghai健
+#            retries：重试次数，默认值是 3 次。
+#            statuses：HTTP 的状态返回码，取值请参考：org.springframework.http.HttpStatus。
+#            methods：指定哪些方法的请求需要进行重试逻辑，默认值是 GET 方法，取值参考：org.springframework.http.HttpMethod。
+#            series：一些列的状态码配置，取值参考：org.springframework.http.HttpStatus.Series。符合的某段状态码才会进行重试逻辑默认值是 SERVER_ERROR，值是 5，也就是 5XX(5 开头的状态码)，共有5个值。
+#            使用上述配置进行测试，当后台服务不可用时，会在控制台看到请求三次的日志，证明此配置有效。
+            name: huanghai
+            retries: 3 # retries：重试次数
+            status: 503 # http状态码
             ### fallback 时调用的方法 http://localhost:8080/fallback
             fallbackUri: forward:/fallback
         ## 限流
@@ -76,6 +97,17 @@ spring:
             redis-rate-limiter.replenishRate: 1
             ### 用户允许在一秒钟内完成的最大请求数
             redis-rate-limiter.burstCapacity: 3
+
+
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000 #超时时间，若不设置超时时间则有可能无法触发熔断
+
+
 
 ---
 spring:
@@ -226,6 +258,17 @@ spring:
             name: huanghai健
             ### fallback 时调用的方法 http://localhost:8080/fallback
             fallbackUri: forward:/fallback
+
+
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000 #超时时间，若不设置超时时间则有可能无法触发熔断
+
+
 
 
 ---

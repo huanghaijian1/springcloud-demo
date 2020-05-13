@@ -1,6 +1,7 @@
 package com.springcloud.gateway.gatewaydemo.resolver;
 
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -9,6 +10,7 @@ import reactor.core.publisher.Mono;
  * @Desc TODO   Spring Cloud Gateway 网关限流过滤器
  * @Version 1.0
  */
+@Component
 public class UriKeyResolver implements KeyResolver {
 
     /*
@@ -20,4 +22,19 @@ public class UriKeyResolver implements KeyResolver {
     public Mono<String> resolve(ServerWebExchange exchange) {
         return Mono.just(exchange.getRequest().getURI().getPath());
     }
+
+    /**
+     * 根据ip限流
+     * @param exchange
+     * @return
+     */
+//    @Override
+//    public Mono<String> resolve(ServerWebExchange exchange) {
+//        return Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
+//    }
+//
+//    public HostAddrKeyResolver hostAddrKeyResolver() {
+//        return new HostAddrKeyResolver();
+//    }
+
 }
