@@ -31,4 +31,14 @@ public class PortalServerDemo {
         return "Hello World" + name + id+"  "+request.getServerPort();
     }
 
+
+    @RequestMapping("/sayHelloworld2")
+    public String sayHelloworld2(HttpServletRequest request){
+        return "Hello World gateway  "+request.getServerPort();
+    }
+    @RequestMapping("/sayHelloworld3")
+    public String sayHelloworld3(HttpServletRequest request,String name, int id){
+        int a =  1/id;
+        return "Hello World" + name + a+"  "+request.getServerPort();
+    }
 }

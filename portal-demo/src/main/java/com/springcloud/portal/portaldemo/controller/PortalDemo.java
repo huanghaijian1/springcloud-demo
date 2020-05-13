@@ -24,6 +24,8 @@ public class PortalDemo {
 
     @Value("${sayHelloworldurl}")
     private String sayHelloworldurl;
+    @Value("${sayHelloworldurl2}")
+    private String sayHelloworldurl2;
 
 //    @RequestMapping("/sayHelloworld/{name}/{id}")
 //    public String sayHelloworld(@PathVariable String name, @PathVariable int id){
@@ -31,9 +33,14 @@ public class PortalDemo {
 //        return message;
 //    }
 
-    @RequestMapping("/sayHelloworld2/{name}/{id}")
-    public String sayHelloworld2(@PathVariable String name, @PathVariable int id){
+    @RequestMapping("/sayHelloworld/{name}/{id}")
+    public String sayHelloworld(@PathVariable String name, @PathVariable int id){
         String message = restTemplate.getForObject(sayHelloworldurl ,String.class,name,id);
+        return message;
+    }
+    @RequestMapping("/sayHelloworld2")
+    public String sayHelloworld2(){
+        String message = restTemplate.getForObject(sayHelloworldurl2 ,String.class);
         return message;
     }
 }

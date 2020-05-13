@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8085
 spring:
   application:
     name: portal-demo
@@ -12,4 +12,6 @@ myremote:
   server:
     name: portalserver-demo
     sayHelloworld: /portal-server/sayHelloworld
+    sayHelloworld2: /portal-server/sayHelloworld2
 sayHelloworldurl: http://${myremote.server.name}/${myremote.server.sayHelloworld}/{name}/{id}
+sayHelloworldurl2: http://${myremote.server.name}/${myremote.server.sayHelloworld2}/
