@@ -1,19 +1,19 @@
 server:
   port: 8100
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
 
 spring:
   application:
-    name: config-server
+    name: config-server-demo
   cloud:
     config:
       server:
         git:
           uri: https://github.com/huanghaijian1/springcloud-demo/
-          search-paths: /springcloud-config/config-repo
-          username:
-          password:
+          #search-paths: /config-server-demo
+          username: huanghaijian1
+          password: HHJian2447816806
