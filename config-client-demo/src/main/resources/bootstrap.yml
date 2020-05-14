@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: config-client-demo
+  cloud:
+    config:
+      name: configtest
+      profile: dev
+      #uri: http://localhost:8100/
+      label: test
+      discovery:
+        enabled: true
+        service-id: config-server-demo
+
