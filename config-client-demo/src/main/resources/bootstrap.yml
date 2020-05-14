@@ -1,17 +1,25 @@
+# bootstrap.yml 比 application.yml 更早被加载
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 spring:
   application:
     name: config-client-demo
   cloud:
     config:
-      name: configtest
+      # name: config-server-demo 中{application}-{profile}.yml中的{application}
+      name: test
+      # name: config-server-demo 中{application}-{profile}.yml中的{profile}
       profile: dev
-      #uri: http://localhost:8100/
-      label: test
+      # 分支名
+      label: master
       discovery:
+        # 开启 Config 服务发现与注册
         enabled: true
+        # 指定 server
+        # name: config-server-demo 中spring.application.name
         service-id: config-server-demo
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+
 

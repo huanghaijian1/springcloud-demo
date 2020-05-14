@@ -16,8 +16,8 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/portal-demo")
 public class PortalDemo {
 
-//    @Autowired
-//    private FeignClientDemo feignClientDemo;
+    @Autowired
+    private FeignClientDemo feignClientDemo;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -29,11 +29,11 @@ public class PortalDemo {
     @Value("${sayHelloworldurl3}")
     private String sayHelloworldurl3;
 
-//    @RequestMapping("/sayHelloworld/{name}/{id}")
-//    public String sayHelloworld(@PathVariable String name, @PathVariable int id){
-//        String message =  feignClientDemo.sayHelloworld(name,id);
-//        return message;
-//    }
+    @RequestMapping("/sayHello/{name}/{id}")
+    public String sayHello(@PathVariable String name, @PathVariable int id){
+        String message =  feignClientDemo.sayHelloworld(name,id);
+        return message;
+    }
 
     @RequestMapping("/sayHelloworld/{name}/{id}")
     public String sayHelloworld(@PathVariable String name, @PathVariable int id){

@@ -15,6 +15,11 @@ spring:
         git:
           uri: https://github.com/huanghaijian1/springcloud-demo/
           label: master
+          # 其他配置文件所在目录（从项目根目录开始）也就是从项目名对应目录开始
+          #  config-server-demo：项目名
+          #  config-repo：与src为兄弟目录
           search-paths: /config-server-demo/config-repo/
+          # git 仓库用户名（公开库可以不用填写）
           username:
+          # git 仓库密码（公开库可以不用填写）
           password:
