@@ -14,6 +14,7 @@ spring:
       server:
         git:
           uri: https://github.com/huanghaijian1/springcloud-demo/
-          search-paths: /config-server-demo/src/main/resources/springcloud-config/config-repo/
-          username: huanghaijian1
-          password: HHJian2447816806
+          label: master
+          search-paths: /config-server-demo/config-repo/
+          username:
+          password:
