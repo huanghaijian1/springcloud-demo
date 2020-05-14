@@ -29,26 +29,26 @@ public class GatewayDemoApplication {
      * @Author: hhj
      * @Date: Created in  2020/5/13
      */
-@Bean
-public RouteLocator getRouteLocator(RouteLocatorBuilder builder) {
-    return builder.routes().
-            route(new Function<PredicateSpec, Route.AsyncBuilder>() {
-                @Override
-                public Route.AsyncBuilder apply(PredicateSpec predicateSpec) {
-                    return predicateSpec
-                            .path("/portal-demo/sayHelloworld2")
-                            .filters(new Function<GatewayFilterSpec, UriSpec>() {
-                                @Override
-                                public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
-                                    return gatewayFilterSpec.stripPrefix(0).filter(new RequestTimeFilter());
-                                }
-                            })
-                            .uri("lb://portal-demo")
-                            .id("consumer9090)");
-
-                }
-            }).build();
-}
+//@Bean
+//public RouteLocator getRouteLocator(RouteLocatorBuilder builder) {
+//    return builder.routes().
+//            route(new Function<PredicateSpec, Route.AsyncBuilder>() {
+//                @Override
+//                public Route.AsyncBuilder apply(PredicateSpec predicateSpec) {
+//                    return predicateSpec
+//                            .path("/portal-demo/sayHelloworld2")
+//                            .filters(new Function<GatewayFilterSpec, UriSpec>() {
+//                                @Override
+//                                public UriSpec apply(GatewayFilterSpec gatewayFilterSpec) {
+//                                    return gatewayFilterSpec.stripPrefix(0).filter(new RequestTimeFilter());
+//                                }
+//                            })
+//                            .uri("lb://portal-demo")
+//                            .id("consumer9090)");
+//
+//                }
+//            }).build();
+//}
 
 
 

@@ -58,6 +58,11 @@ spring:
 #         - Query=baz
 #         - Cookie=chocolate, ch.p
 #         - After=2018-01-20T06:06:06+08:00[Asia/Shanghai]
+        filters:
+        - name: RequestTime
+          args:
+            type: customer
+            op: root
       # 路由标识（id：标识，具有唯一性）   综合
       - id: route_all
         # 目标服务地址（uri：地址，请求转发后的地址）

@@ -10,7 +10,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * 自定义Gatewayfilter
+ * 自定义Gatewayfilter 还需要在启动类加段代码
  * @Author: hhj
  * @Date: Created in  2020/5/13
  */
