@@ -34,7 +34,7 @@ public class PortalServerDemo {
 
     @RequestMapping("/sayHelloworld2")
     public String sayHelloworld2(HttpServletRequest request){
-        return "Hello World gateway  "+request.getServerPort();
+        return "Hello World gateway2  "+request.getServerPort();
     }
     @RequestMapping("/sayHelloworld3")
     public String sayHelloworld3(HttpServletRequest request,String name, int id){

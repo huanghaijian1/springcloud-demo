@@ -32,13 +32,13 @@ public class TokenFilter implements GlobalFilter, Ordered {
         /**
          * 第一种玩法
          */
-        //String token = exchange.getRequest().getQueryParams().getFirst("token");
-        String token = exchange.getRequest().getHeaders().getFirst("token");
-        if (token == null || token.isEmpty()) {
-            logger.info("token 为空，无法进行访问.");
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return exchange.getResponse().setComplete();
-        }
+//        String token = exchange.getRequest().getQueryParams().getFirst("token");
+////        String token = exchange.getRequest().getHeaders().getFirst("token");
+//        if (token == null || token.isEmpty()) {
+//            logger.info("token 为空，无法进行访问.");
+//            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+//            return exchange.getResponse().setComplete();
+//        }
         return chain.filter(exchange);
 
         /**

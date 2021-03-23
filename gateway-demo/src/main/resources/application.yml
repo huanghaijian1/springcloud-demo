@@ -48,6 +48,7 @@ spring:
       - id: route_second
         uri: lb://portalserver-demo
         predicates:
+         - Path=/portalserver-demo/**
          - Method=GET
          - Header=serverName,psd
 #         - Host=**.foo.org
@@ -70,10 +71,10 @@ spring:
         # 路由条件（predicates：断言，匹配 HTTP 请求内容）
         predicates:
         ## 转发地址格式为 uri/routeAll，/all 部分会被下面的过滤器给截取掉
-        - Path=/portal-demo/**
+         - Path=/portal-demo/**
         ## 匹配 GET 请求
-        - Method=GET
-        - Header=serverName,pd
+         - Method=GET
+#        - Header=serverName,pd
         # 过滤器（filters：过滤器，过滤规则）
         filters:
         ## 截取路径位数
@@ -81,25 +82,38 @@ spring:
         ## 添加指定参数
         - AddRequestParameter=name, HH&id=12
         ## 熔断
-        - name: Hystrix
-          args:
-#            retries：重试次数，默认值是 3 次。
-#            statuses：HTTP 的状态返回码，取值请参考：org.springframework.http.HttpStatus。
-#            methods：指定哪些方法的请求需要进行重试逻辑，默认值是 GET 方法，取值参考：org.springframework.http.HttpMethod。
-#            series：一些列的状态码配置，取值参考：org.springframework.http.HttpStatus.Series。符合的某段状态码才会进行重试逻辑默认值是 SERVER_ERROR，值是 5，也就是 5XX(5 开头的状态码)，共有5个值。
-#            使用上述配置进行测试，当后台服务不可用时，会在控制台看到请求三次的日志，证明此配置有效。
-            name: huanghai
-            retries: 3 # retries：重试次数
-            status: 503 # http状态码
-            ### fallback 时调用的方法 http://localhost:8080/fallback
-            fallbackUri: forward:/fallback
-        ## 限流
+#        - name: Hystrix
+#          args:
+##            retries：重试次数，默认值是 3 次。
+##            statuses：HTTP 的状态返回码，取值请参考：org.springframework.http.HttpStatus。
+##            methods：指定哪些方法的请求需要进行重试逻辑，默认值是 GET 方法，取值参考：org.springframework.http.HttpMethod。
+##            series：一些列的状态码配置，取值参考：org.springframework.http.HttpStatus.Series。符合的某段状态码才会进行重试逻辑默认值是 SERVER_ERROR，值是 5，也就是 5XX(5 开头的状态码)，共有5个值。
+##            使用上述配置进行测试，当后台服务不可用时，会在控制台看到请求三次的日志，证明此配置有效。
+#            name: huanghai
+#            retries: 3 # retries：重试次数
+#            status: 503 # http状态码
+#            ### fallback 时调用的方法 http://localhost:8080/fallback
+#            fallbackUri: forward:/fallback
+
+#     ## 限流
+#     1. 注意此处是结合 redis 实现的限流，所以 filter 过滤器的 name 必须为 RequestRateLimiter
+#     2. 并且通过实现 KeyResolver 类来自定义限流策略
+#     3. 启动本地 redis（redis-server.exe） 服务
+#    4. 启动注册中心工程（registry-service）,网关工程（master-service）和服务工程 A/B（a-service、b-service）
+#    5. 项目启动成功后访问：http://localhost:8080/**
+#    6. 此时限流却无论如何都不生效，原因有如下两点
+#        ① redis-server 版本过低！我 Windows 本地是 redis-2.4.2 版本的，要用 3 以上的版本！！！
+#        ② 数据在 redis 中存储的时间只有几秒，所以得使用 monitor 指令来动态的观察！！！
+#    7. 打开 redis-cli.exe，输入命令 monitor 
+#    8. 快速刷新地址：http://localhost:8000/age
+#    9. 页面上会出现 429，redis-cli.exe 中会出现很多数据交互（request_rate_limiter.xxx 开头的 key）
+#   10. 证明限流成功
         - name: RequestRateLimiter
           args:
             ### 限流过滤器的 Bean 名称
             key-resolver: '#{@uriKeyResolver}'
             ### 希望允许用户每秒处理多少个请求
-            redis-rate-limiter.replenishRate: 1
+            redis-rate-limiter.replenishRate: 0
             ### 用户允许在一秒钟内完成的最大请求数
             redis-rate-limiter.burstCapacity: 3
 
