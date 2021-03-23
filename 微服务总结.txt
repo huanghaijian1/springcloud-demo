@@ -35,10 +35,11 @@
   
 2.网关zuul gateway  https://blog.csdn.net/qq_41402200/article/details/94333830
 
- routes:路由（routes：路由，它由唯一标识（ID）、目标服务地址（uri）、
+ - 什么是网关：https://www.jianshu.com/p/662c214ccfe4
+ - routes:路由（routes：路由，它由唯一标识（ID）、目标服务地址（uri）、
        一组断言（predicates）和一组过滤器组成（filters）。filters 不是必需参数。）,
        网关转发在uri、predicates、filters下实现，限流和熔断在filters下实现
- gateway具体用法看gateway-demo的application.yml
+ - gateway具体用法看gateway-demo的application.yml
 
 
 

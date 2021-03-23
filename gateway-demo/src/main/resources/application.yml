@@ -21,7 +21,7 @@ spring:
     # route_hystrix：熔断
     # route_requestRateLimiter：限流
     # route_all：综合
-    active: route_all
+    active: route_hystrix
 
 
 ---
@@ -113,7 +113,7 @@ spring:
             ### 限流过滤器的 Bean 名称
             key-resolver: '#{@uriKeyResolver}'
             ### 希望允许用户每秒处理多少个请求
-            redis-rate-limiter.replenishRate: 0
+            redis-rate-limiter.replenishRate: 1
             ### 用户允许在一秒钟内完成的最大请求数
             redis-rate-limiter.burstCapacity: 3
 

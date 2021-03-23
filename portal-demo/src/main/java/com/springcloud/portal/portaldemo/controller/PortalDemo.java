@@ -31,6 +31,7 @@ public class PortalDemo {
 
     @RequestMapping("/sayHello/{name}/{id}")
     public String sayHello(@PathVariable String name, @PathVariable int id){
+        int a = 1/0;
         String message =  feignClientDemo.sayHelloworld(name,id);
         return message;
     }
