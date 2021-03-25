@@ -1,0 +1,10 @@
+一.java基础
+ 1.集合
+ 2.浮点数运算、比较大小
+ 3.io流
+ 4.多线程
+ 5.jvm
+
+二.后端框架知识
+ 1.springboot+spring+springmvc+mybatis/hibernate
+ 2.springboot+rabbitMq、Springboot2 + Shiro + Redis + Jwt 前后端分离整合、定时任务调度_spirng quartz
