@@ -1,9 +1,41 @@
 一.java基础
- 1.集合
+ 1.集合 List set Map
  2.浮点数运算、比较大小
- 3.io流
+ 3.io流  https://blog.csdn.net/sinat_37064286/article/details/86537354
+   我用过的：
+    File、
+    outputStream、FileOutputStream、ByteArrayOutputStream、BufferedInputStream、MappedByteBuffer
+    inputStream、FileInputStream、ByteArrayInputStream、BufferedOutputStream
+    ZipInputStream/ZipOutputStream/ZipEntry等
  4.多线程
- 5.jvm
+   -线程基础知识
+
+   -各种锁的了解
+
+   -各种线程池的用法以及其原理
+      ThreadPoolExecutor
+
+      其他 https://blog.csdn.net/sx1119183530/article/details/79734953
+
+   -并发编程
+    线程池的使用
+
+    线程安全对象
+      * XXX<Y> coll = Collections.synchronizedXXX(new XXXX<>());//XXX为抽象集合，例如：List/Map; XXXX为XXX子类
+       例如：Collections.synchronizedList(new LinkedList<>());Collections.synchronizedMap(new HashMap<K, V>());
+
+      * new CopyOnWriteArrayList();/new CopyOnWriteArraySet();/自定义的CopyOnWriteMap/ConcurrentHashMap
+
+    相关并发工具类
+       并发工具类java.util.concurrent包下CountDownLatch
+        用法：CountDownLatch latch = new CountDownLatch(count);//count 线程数
+              然后再子线程执行完后调用 latch.countDown(); //未完成线程数减一
+              最后在主线程调用 latch.await()/latch.await(long timeout, TimeUnit unit)
+                //线程都完成后count变为0后程序才可继续执行/指定时间内count不变为0，继续执行程序
+
+ 5.jdk8新特性
+
+ 6.jvm
 
 二.后端框架知识
  1.springboot+spring+springmvc+mybatis/hibernate
