@@ -18,13 +18,49 @@
    加以说明：按开课单位、课程、校区、教师所在单位分别分组统计每个老师的每个工作量课程类型的工作量
    用到的一些数据库里的函数有，decode(字段，(if)条件1，结果1，(else if)条件2，结果2，...,(else)不满足所有条件时的结果)
    多行数据合并一行 listagg(字段名,',') within group (order by 字段名)，
-   多列数据拼接 concat('aa','bb')/concat(concat('aa','bb'),'cc')最多两个参数
-   计算类函数 round(),sum(),nvl2()
-   日期类函数 to_char(字段名，'yyyy-mm-dd'),yyyy-mm-dd为格式
-              to_date(字段名)
-    order by 字段名 desc/asc nulls last/first
+   多列数据拼接 concat('aa','bb')/concat(concat('aa','bb'),'cc')最多两个参数，'a'||'b':拼接 'ab'
+                substr(字段名,1,4) 从第一个字符开始截取四个
+                to_char(字段名）,case语句，replace(dmmc,'广东省'，'') dmmc里的广东省字样用''替换
+                a between b and c --> b<=a<c , length(ZYJSZWM)字段长度
+   计算类函数 round(X,y) 四舍五入保留y位小数,sum(X),min(),max(),avg(),to_number(X),count(1),
+               nvl(X,0) if X==NULL,'' nvl(X,0)=0 else nvl(X,0)=X,
+               格式：NULLIF (expr1, expr2) 含义：相等返回NULL，不等返回expr1
+   日期类函数 to_char(字段名，'yyyy-MM-dd'),yyyy-mm-dd为格式,还有yyyy-MM-dd hh:mi:ss、yyyy-MM-dd hh24:mi:ss等
+              to_date(字段名，'yyyy-MM-dd')
+              注意：在转化为DATE类型的时候一定要注意前后两个参数的格式，前后格式必须保持一致，否则会出错。
+   sql中临时表
+     with temp1 as (sql查询语句),temp2 as (sql查询语句) select * from temp1
+   关键字：distinct,union all 前后两条sql结果集全部合并/union 前后两条sql结果集合并,值一样的只显示一条
+   order by 字段名 desc/asc nulls last/first
    sql语句执行效率问题：where 字句的顺序，in/exist的选择，涉及到数据量很多的表一般必须要建索引（where字句的列）
    破坏索引的情况要注意，尽量避免用子查询
+   inner join/left join/right join/full join
+   表授权：grant  <权限>  on  表名[(列名)]  to  用户 With  grant  option
+           或 grant <权限> ON <数据对象> to <数据库用户>
+       //数据对象可以是表名或列名
+       //权限表示对表的操作，如select,update,insert,delete
+       注：授权命令是由数据库管理员使用的，若给用户分配权限时带With  grant  option子句，
+           则普通用户获权后,可把自己的权限授予其他用户
+   回收权限 revoke
+     REVOKE <权限> ON <数据对象>  FROM <数据库用户名>
+
+   创建视图:CREATE OR REPLACE VIEW 视图名(字段1,字段2,字段3) AS select 字段1,字段2,字段3 ......;
+
+   创建索引: https://blog.csdn.net/weixin_41697106/article/details/106211858
+
+   创建表：CREATE TABLE 表名(字段名 数据类型 [完整性约束条件],...)
+
+   修改列：
+     Mysql :
+       1.添加字段：         alter table 表名 add(aaa 字段类型 ,bbb 字段类型); 这样就添加了两个字段 aaa 、bbb 到表中。
+       2.修改字段名：      alter table 表名 change aaa ccc 字段类型 ；将 aaa 改名为 ccc  此处的字段类型 必须要加 。
+       3.修改字段类型：  alter table 表名  modify aaa 新字段类型； 将 aaa 的类型改为新字段类型；
+       4.删除字段 ：        alter table 表名  drop column aaa;
+     Oracle ：
+       1.添加字段 ：         alter table 表名 add(aaa 字段类型 ，bbb 字段类型);
+       2.修改字段 :            alter table 表名 rename aaa  to ccc 字段类型 ；
+       3.修改字段类型 ：   alter table 表名 modify aaa 字段类型  ;
+       4.删除字段 ：          alter table 表名 drop column aaa ；
 
 ③.其他统计类功能 --- sql编写能力
  1.课程完成情况统计分析、学生成绩完成情况统计分析、高基表统计分析、主修毕业结论统计分析
