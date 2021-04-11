@@ -12,18 +12,58 @@
    -线程基础知识
 
    -各种锁的了解（深入了解）
-     公平锁/非公平锁、乐观锁/悲观锁   使用与锁的状态
+     公平锁/非公平锁、乐观锁（CAS）/悲观锁、redis分布式锁、zookeeper分布式锁......   这些锁的使用与锁的状态
 
    -各种线程池的用法以及其原理（深入了解）
-      ThreadPoolExecutor：
-      https://www.jianshu.com/p/f030aa5d7a28
-      https://blog.csdn.net/u014799292/article/details/90167096
-      https://blog.csdn.net/USTC_Zn/article/details/54864244?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.baidujs&dist_request_id=1329188.8887.16178936911542405&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.baidujs
+            https://www.jianshu.com/p/f030aa5d7a28
+            https://blog.csdn.net/javazejian/article/details/77410889
+            https://blog.csdn.net/u014799292/article/details/90167096
+            https://blog.csdn.net/USTC_Zn/article/details/54864244?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.baidujs&dist_request_id=1329188.8887.16178936911542405&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.baidujs
+      ThreadPoolExecutor： ThreadPoolExecutor构造函数参数的了解、java并发之阻塞队列LinkedBlockingQueue与ArrayBlockingQueue、
+                           线程池里是怎么创建线程、线程返回值问题
+      ·核心线程数，最大线程数，空线程消耗等待时间极其单位
+         线程数小于等于核心线程数：有任务过来就创建新线程
+         线程数大于等于核心线程数小于最大线程数：有任务过来先判断是否有空闲线程，有则用空闲线程执行，无则加入到阻塞队列自动有课执行任务的线程，
+            若阻塞队列满了也没空闲线程则继续创建线程
+         线程数大于最大线程数：有任务过来就先插入到阻塞队列，若阻塞队列已满则直接拒绝执行
+         当线程数大于核心线程数：空闲线程过了指定时间长度还处于空闲状态，则销毁之
+      ·阻塞队列
+        ArrayBlockingQueue：存放数据的数据结构是数组，有界阻塞队列，读写线程是用ReenterLock和两个条件读写控制
+        LinkedBlockingQueue：存放数据的数据结构是链表，无界阻塞队列但也可知道队列大小，读写线程是用putLock,takeLock两个锁
+                             并实现了锁分离和两个条件读写控制，所以吞吐量比ABQ大，但因读写数据时需要额外创建和销毁node节点对象
+                             所消耗的资源就比较多
+      ·ThreadFactory线程池中创建线程的工程
+        线程池底层是怎么创建线程的？
 
-   -并发编程
-    常用的并发包下的类：
+        默认工厂：Executors.defaultThreadFactory()
+        自定义工厂：new ThreadFactory(){
+                       @Override
+                       public Thread newThread(Runnable r){//r也需要自定义
+                          Thread t = new Thread(r);
+                          ...
+                          return t;
+                       }
+                    }
+                    最好自己写一个实现ThreadFactory接口的子类作为创建线程的工厂
+         自定义ThreadFactory可以根据线程池究竟何时创建了多少线程，也可以自定义线程的名称、组以及优先级等信息，
+         甚至可以任性的将线程设置为守护线程。总之，自定义ThreadFactory可以更加自由的设置线程池中所有线程的状态。
+
+      ·拒绝策略 https://blog.csdn.net/weixin_48502062/article/details/106682658
+         简单回答：
+         中止策略：无特殊场景(默认用的这个)：
+         丢弃策略：无关紧要的任务
+         弃老策略：发布消息。
+         调用者运行策略：不允许失败场景（对性能要求不高、并发量较小）。
+
+      -线程返回值问题
+
+
+   -并发编程 ***用消息队列处理高并发是很好的方法（削峰）
+    常用的并发包下的类：ExecutorService,ThreadPoolExecutor，ThreadFactory，ArrayBlockingQueue，LinkedBlockingQueue,
+                        CountDownLatch,ConcurrentHashMap,CopyOnWriteArrayList,CopyOnWriteArraySet ......
+
     线程池的使用
-          ThreadPoolExecutor-自定义，更好地跟自己要写的代码契合
+          ThreadPoolExecutor-自定义，更好地契合场景要求
     线程安全对象
       * XXX<Y> coll = Collections.synchronizedXXX(new XXXX<>());//XXX为抽象集合，例如：List/Map; XXXX为XXX子类
        例如：Collections.synchronizedList(new LinkedList<>());Collections.synchronizedMap(new HashMap<K, V>());
@@ -53,3 +93,5 @@
 ②Springboot2 + Shiro + Redis + Jwt 前后端分离整合
 
 ③定时任务调度_spirng quartz
+
+
