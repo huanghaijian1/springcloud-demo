@@ -33,8 +33,11 @@
                              并实现了锁分离和两个条件读写控制，所以吞吐量比ABQ大，但因读写数据时需要额外创建和销毁node节点对象
                              所消耗的资源就比较多
       ·ThreadFactory线程池中创建线程的工程
-        线程池底层是怎么创建线程的？
-
+        线程池底层是怎么创建线程的？ ---Worker、addWorker、run、runWork
+         线程池创建时会初始化一个Worker对象，当有任务时，Worker对象调用run方法，run()里也会调用runWork()创建线程
+         其中：当线程数大于线程池核心线程数时，若无空闲线程任务会先进入等待队列，而Worker会调用getTask()导致阻塞
+         直到在等待队列获取到任务，然后再调用addWorker()看是否有空闲线程有就让空闲线程执行任务，无则创建线程（调用run(),run()调用runWork()创建线程）
+               https://blog.csdn.net/qq_27276045/article/details/106774674
         默认工厂：Executors.defaultThreadFactory()
         自定义工厂：new ThreadFactory(){
                        @Override
@@ -56,7 +59,58 @@
          调用者运行策略：不允许失败场景（对性能要求不高、并发量较小）。
 
       -线程返回值问题
-
+       1.通过Callable接口实现线程：通过FutureTask（task.get()获取返回值，该方法会阻塞当前线程）
+          public class MyCallable implements Callable<String> {
+              @Override
+              public String call() throws Exception{
+                  String value="test";
+                  System.out.println("Ready to work");
+                  Thread.currentThread().sleep(5000);
+                  System.out.println("task done");
+                  return  value;
+              }
+              public static void main(String[] args) throws ExecutionException, InterruptedException {
+                  FutureTask<String> task = new FutureTask<String>(new MyCallable());
+                  new Thread(task).start();
+                  if(!task.isDone()){
+                      System.out.println("task has not finished, please wait!");
+                  }
+                  System.out.println("task return: " + task.get());
+              }
+          }
+       2.线程池获取（线程池的提交任务方法：submit方法有返回值（实现Callable<X>的线程,X为call方法返回值类型），
+                                           execute则无返回值（实现Runnable的线程））
+         public class MyCallable implements Callable<String> {
+             @Override
+             public String call() throws Exception{
+                 String value="test";
+                 System.out.println("Ready to work");
+                 Thread.currentThread().sleep(5000);
+                 System.out.println("task done");
+                 return  value;
+             }
+             public static void main(String[] args) {
+                 ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();
+                 Future<String> future = newCachedThreadPool.submit(new MyCallable());
+                 if(!future.isDone()){
+                     System.out.println("task has not finished, please wait!");
+                 }
+                 try {
+                     System.out.println(future.get());
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                 }finally {
+                     newCachedThreadPool.shutdown();
+                 }
+             }
+         }
+       3.使用Thread类的join()阻塞当前线程以等待子线程处理完毕
+    线程池的作用：
+    （1）利用线程池管理并复用线程、控制最大并发数等。
+    （2）实现任务线程队列缓存策略和拒绝机制。
+    （3）实现某些与时间相关的功能，如定时执行、周期执行等。
+    （4）隔离线程环境。比如，交易服务和搜索服务在同一台服务器上，分别开启两个线程池，交易线程的资源消耗明显要大；
+         因此，通过配置独立的线程池，将较慢的交易服务与较快的搜索服务隔离开，避免各自服务线程相互影响。
 
    -并发编程 ***用消息队列处理高并发是很好的方法（削峰）
     常用的并发包下的类：ExecutorService,ThreadPoolExecutor，ThreadFactory，ArrayBlockingQueue，LinkedBlockingQueue,
