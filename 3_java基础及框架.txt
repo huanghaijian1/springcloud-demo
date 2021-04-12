@@ -56,7 +56,7 @@
          中止策略：无特殊场景(默认用的这个)：
          丢弃策略：无关紧要的任务
          弃老策略：发布消息。
-         调用者运行策略：不允许失败场景（对性能要求不高、并发量较小）。
+         调用者运行策略：不允许失败场景（对性能要求不高、并发量较小），另起线程去执行被拒绝的任务。
 
       -线程返回值问题
        1.通过Callable接口实现线程：通过FutureTask（task.get()获取返回值，该方法会阻塞当前线程）
@@ -79,7 +79,7 @@
               }
           }
        2.线程池获取（线程池的提交任务方法：submit方法有返回值（实现Callable<X>的线程,X为call方法返回值类型），
-                                           execute则无返回值（实现Runnable的线程））
+                                           execute则无返回值（实现Runnable的线程），submit()里调用了execute）
          public class MyCallable implements Callable<String> {
              @Override
              public String call() throws Exception{
