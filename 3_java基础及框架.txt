@@ -10,7 +10,7 @@
     ZipInputStream/ZipOutputStream/ZipEntry等
  4.多线程
    -线程基础知识
-
+        https://www.cnblogs.com/zrtqsk/p/3776328.html
    -各种锁的了解（深入了解）
      公平锁/非公平锁、乐观锁（CAS）/悲观锁、redis分布式锁、zookeeper分布式锁......   这些锁的使用与锁的状态
 
