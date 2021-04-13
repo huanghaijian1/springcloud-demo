@@ -13,6 +13,26 @@
         https://www.cnblogs.com/zrtqsk/p/3776328.html
    -各种锁的了解（深入了解）
      公平锁/非公平锁、乐观锁（CAS）/悲观锁、redis分布式锁、zookeeper分布式锁......   这些锁的使用与锁的状态
+     ReentrantLock：可重入锁，互斥锁，悲观锁
+     synchronized：同步锁，悲观锁
+     公平锁：Lock lock = new ReentrantLock(true)
+     非公平锁:synchronized,Lock lock = new ReentrantLock(),Lock lock = new ReentrantLock(false)
+                      //三种获取锁的方法
+                     lock.lock();//不支持中断，获取不到锁就会一直阻塞，可能造成死锁
+                     lock.lockInterruptibly();//支持中断，获取锁过程，若其它线程调用该线程的interrupt()中断,则该线程而直接返回
+                     if(lock.tryLock()){//或者lock.tryLock(5,TimeUnit.SECONDS)
+                     //获取锁并返回true false,也支持中断
+
+                     }else{
+
+                     }
+                     try{...}catch(...){...}finally{lock.unlock()}//释放锁
+     乐观锁（CAS）：
+
+     redis分布式锁：
+
+     zookeeper分布式锁：
+
 
    -各种线程池的用法以及其原理（深入了解）
             https://www.jianshu.com/p/f030aa5d7a28
