@@ -14,7 +14,8 @@
    -各种锁的了解（深入了解）
      公平锁/非公平锁、乐观锁（CAS）/悲观锁、redis分布式锁、zookeeper分布式锁......   这些锁的使用与锁的状态
      ReentrantLock：可重入锁，互斥锁，悲观锁，可中断
-     synchronized：同步锁，悲观锁，不可中断
+     synchronized：可重入锁，同步锁，悲观锁，不可中断
+     可重入锁：同一个线程重复请求由自己持有的锁对象时，可以请求成功而不会发生死锁。
      公平锁：Lock lock = new ReentrantLock(true)
      非公平锁:synchronized,Lock lock = new ReentrantLock(),Lock lock = new ReentrantLock(false)
                       //三种获取锁的方法
@@ -54,15 +55,15 @@
      分布式锁：https://www.cnblogs.com/seesun2012/p/9214653.html
       -数据库乐观锁：
 
-
-
       -redis分布式锁：
-
-
+         Redission 分布式锁:https://blog.csdn.net/qq_33363618/article/details/88783766?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.baidujs&dist_request_id=1331647.13360.16184140521892503&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.baidujs
+         用redis Redission分布式锁处理业务时最好在数据库里定义一个唯一列值为处理业务名，处理完后再把该列的值置空
 
       -zookeeper分布式锁：
         https://blog.csdn.net/sunfeizhi/article/details/51926396
-
+        里面的ZkClientExt为自定义的类，继承自ZkClient
+        //创建zk
+        protected ZkClient zkClient = new ZkClient(ZK_ADDR, SESSION_TIMEOUT)
 
    -各种线程池的用法以及其原理（深入了解）
             https://www.jianshu.com/p/f030aa5d7a28

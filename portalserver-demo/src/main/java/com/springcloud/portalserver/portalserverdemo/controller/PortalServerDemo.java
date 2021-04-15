@@ -2,11 +2,16 @@ package com.springcloud.portalserver.portalserverdemo.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.apache.catalina.connector.Request;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -17,13 +22,39 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/portal-server")
 public class PortalServerDemo {
 
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
+    @Autowired
+    private Redisson redisson;
 
     @RequestMapping("/sayHelloworld/{name}/{id}")
     //@HystrixCommand(fallbackMethod = "defaultSay")
     public String sayHelloworld(HttpServletRequest request, @PathVariable String name, @PathVariable int id){
-
-
+//        try {
+//            Thread.sleep(1000*50);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        boolean flag = redisTemplate.expire("abc",60,TimeUnit.SECONDS);
+//       redisTemplate.opsForValue().setIfAbsent()
         int a =  1/id;
+        /**
+         * public boolean tryLock(long waitTime, long leaseTime, TimeUnit unit)
+         * 确实是这样，当设置了leaseTime，看门狗机制失效了，设置waitTime不影响看门狗机制
+         */
+        RLock rLock = redisson.getLock("mylock");
+        try {
+            if(rLock.tryLock()){
+                //rLock.tryLock(10,-1L,TimeUnit.SECONDS);第二个参数-1L 看门狗才会生效
+            }else{
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            rLock.unlock();
+        }
+
         return "Hello World" + name + a+"  "+request.getServerPort();
     }
 

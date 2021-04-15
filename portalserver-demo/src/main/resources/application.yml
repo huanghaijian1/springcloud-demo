@@ -3,7 +3,20 @@ server:
 spring:
   application:
     name: portalserver-demo
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#    password:
+#    timeout: 6000s
+#    cluster:
+#      max-redirects: 1
+#      nodes:
+#        - 10.98.66.65:6379
+#        - 10.98.66.66:6379
+#        - 10.98.66.67:6379
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
