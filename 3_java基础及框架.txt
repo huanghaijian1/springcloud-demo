@@ -2,7 +2,8 @@
  1.集合 List set Map（性能，优缺点，底层数据结构，原理，线程安全问题）
    字符串 String,StringBuffer,StringBulider,拼接，存储的过程与原理
  2.浮点数运算、比较大小
- 3.io流  https://blog.csdn.net/sinat_37064286/article/details/86537354
+ 3.io流  理论：https://blog.csdn.net/sinat_37064286/article/details/86537354
+         面试题：https://www.cnblogs.com/lanqingzhou/p/13609317.html
    我用过的：
     File、
     outputStream、FileOutputStream、ByteArrayOutputStream、BufferedInputStream、MappedByteBuffer
