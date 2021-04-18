@@ -1,9 +1,16 @@
 一.java基础
- 1.集合 List set Map（性能，优缺点，底层数据结构，原理，线程安全问题）
+ 1.集合 List set Map（性能，优缺点，底层数据结构，原理，线程安全问题，扩容问题）
+     https://blog.csdn.net/oxl9235/article/details/106118656
+     https://blog.csdn.net/qichangjian/article/details/87618758 扩容
    字符串 String,StringBuffer,StringBulider,拼接，存储的过程与原理
- 2.浮点数运算、比较大小
- 3.io流  理论：https://blog.csdn.net/sinat_37064286/article/details/86537354
-         面试题：https://www.cnblogs.com/lanqingzhou/p/13609317.html
+     https://www.cnblogs.com/jiading/articles/12562881.html
+     String '+' 拼接会先转换传StringBuilder,再append进行拼接，最后toString返回String
+     StringBuilder调用append返回会判断拼接后字符串长度是否大于用于存放字符的char[] value的长度（value.length默认16），
+     new StringBuilder(str)时char[] value的长度则str.length+16，
+     大于则扩容（需创建一个新的char[] copy 并把copy赋值给原来存放字符的char[] value）
+     大量字符拼接时（for循环拼接），最好能在创建StringBuilder时自动容量，避免过多的扩容
+ 2.浮点数运算、比较大小 用BigDecimal
+ 3.io流  https://blog.csdn.net/sinat_37064286/article/details/86537354
    我用过的：
     File、
     outputStream、FileOutputStream、ByteArrayOutputStream、BufferedInputStream、MappedByteBuffer
@@ -13,6 +20,12 @@
    -线程基础知识
         https://www.cnblogs.com/zrtqsk/p/3776328.html
    -各种锁的了解（深入了解）
+     锁优化的总结： 1、避免死锁  2、减小锁的持有时间  3、减小锁的粒度  4、锁的分离
+                    5、尽量使用无锁的操作，如原子操作(Atomic系列类),volatile关键字
+     锁的读写分离：读读共享，写写互斥。读写互斥。
+       ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
+       ReentrantReadWriteLock.ReadLock rLock = rwLock.readLock();//读锁
+       ReentrantReadWriteLock.WriteLock wLock = rwLock.writeLock();//写锁
      公平锁/非公平锁、乐观锁（CAS）/悲观锁、redis分布式锁、zookeeper分布式锁......   这些锁的使用与锁的状态
      ReentrantLock：可重入锁，互斥锁，悲观锁，可中断
      synchronized：可重入锁，同步锁，悲观锁，不可中断
@@ -42,8 +55,8 @@
      -使用场景：因为乐观锁使用递归+版本号控制实现，所以，如果线程冲突几率大，使用乐观锁会重复很多次操作（包括查询数据库），
                尤其是递归部分逻辑复杂，耗时和耗性能，是低效不合适的，应考虑使用悲观锁。
            乐观锁悲观锁的选择：
-           乐观锁：并发冲突几率小，对应模块递归操作简单时使用
-           悲观锁：并发几率大，对应模块操作复杂时使用
+     ? ?   乐观锁：并发冲突几率小，对应模块递归操作简单时使用
+     ? ?   悲观锁：并发几率大，对应模块操作复杂时使用
       -其他说明:1.对应数据库表设计时，需要往表里加一个version字段。每次查询时，查出带有version的数据记录，
                   更新数据时，判断数据库里对应id的记录的version是否和查出的version相同。
                   若相同，则更新数据并把版本号+1；若不同，则说明，该数据发送并发，
@@ -51,9 +64,8 @@
                  2.实现了一个乐观锁，作用是冲数据库里更新一条数据病返回前端。如果并发率大，
                    一次请求可能则会重复执行很多次automaticAssign，则性能低。如果并发很乐观，用户请求少，
                    则不需要用synchronized，多线程时性能高。
-
-      -volatile关键字：https://www.cnblogs.com/dolphin0520/p/3920373.html
-           volatile关键字的两层语义
+      -volatile关键字：
+	             volatile关键字的两层语义
 　　              一旦一个共享变量（类的成员变量、类的静态成员变量）被volatile修饰之后，那么就具备了两层语义：
 　　              1）保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。
 　　              2）禁止进行指令重排序。
@@ -194,12 +206,42 @@
 
 二.后端框架知识
 1.springboot+spring+springmvc+mybatis/hibernate
+ --springmvc默认单例可通过@Scope("prototype")改为多例，单例时所有线程（包括不同用户不同机器访问）共用成员变量
+   1核心控制器，2适配器映射器，3处理器映射器，4视图渲染，每一步完成都先返回核心控制器然后再到下一步
+ --mybatis：https://blog.csdn.net/a745233700/article/details/80977133
+ --spring:https://www.cnblogs.com/yanggb/p/11004887.html
+    ThreadLocal 线程局部 (thread-local) 变量的使用
+    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly()  设置手动回滚。
+    @transactional为什么失效
+    spring扫描到@transactional生成代理类，有@transactional会调用 startTransaction();
+    class proxy$A{
+        A objectA = new A();
+        method b(){    //标记2
+            startTransaction();
+            objectA.b();//原来那个类的b方法
+        }
+        method a(){    //标记3
+            objectA.a();    //由于a()没有注解，所以不会启动transaction，而是直接调用A的实例的a()方法
+        }
+    }
+    1、检查你方法是不是public的
+    2、你的异常类型是不是unchecked异常
+    如果我想check异常也想回滚怎么办，注解上面写明异常类型即可
+    @Transactional(rollbackFor=Exception.class)
+    类似的还有norollbackFor，自定义不回滚的异常
+    3、数据库引擎要支持事务，如果是MySQL，注意表要使用支持事务的引擎，比如innodb，如果是myisam，事务是不起作用的
+    4、是否开启了对注解的解析
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+    5、spring是否扫描到你这个包，如下是扫描到org.test下面的包
+    <context:component-scan base-package="org.test" ></context:component-scan>
+    6、检查是不是同一个类中的方法调用（如a方法调用同一个类中的b方法）
+    7、异常是不是被你catch住了
 2.springboot+rabbitMq、Springboot2 + Shiro + Redis + Jwt 前后端分离整合、定时任务调度_spring quartz
 ①springboot+rabbitMq
 简单实用：https://blog.csdn.net/typ1805/article/details/82835318
 面试题：https://zhuanlan.zhihu.com/p/139918749
 综合：https://www.cnblogs.com/ithushuai/p/12443460.html
-
+rabbitmq可实现流量削峰，限流，分布式事务
 
 ②Springboot2 + Shiro + Redis + Jwt 前后端分离整合
 

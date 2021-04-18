@@ -4,13 +4,16 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.apache.catalina.connector.Request;
 import org.redisson.Redisson;
 import org.redisson.api.RLock;
+import org.redisson.api.RReadWriteLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 
@@ -42,6 +45,10 @@ public class PortalServerDemo {
          * public boolean tryLock(long waitTime, long leaseTime, TimeUnit unit)
          * 确实是这样，当设置了leaseTime，看门狗机制失效了，设置waitTime不影响看门狗机制
          */
+//        RReadWriteLock rReadWriteLock = redisson.getReadWriteLock("abc");
+//        RLock rLock= rReadWriteLock.readLock();//读锁
+//        RLock wLock= rReadWriteLock.writeLock();//写锁
+        new StringBuilder(1000).append("");
         RLock rLock = redisson.getLock("mylock");
         try {
             if(rLock.tryLock()){
