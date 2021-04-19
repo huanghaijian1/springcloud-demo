@@ -9,7 +9,7 @@
                nvl(X,0) if X==NULL,'' nvl(X,0)=0 else nvl(X,0)=X,
                格式：NULLIF (expr1, expr2) 含义：相等返回NULL，不等返回expr1
    日期类函数 to_char(字段名，'yyyy-MM-dd'),yyyy-mm-dd为格式,还有yyyy-MM-dd hh:mi:ss、yyyy-MM-dd hh24:mi:ss等
-              to_date(字段名，'yyyy-MM-dd')
+              to_date(字段名，'yyyy-MM-dd')，获取上一个月上一年上一天的日期函数是什么
               注意：在转化为DATE类型的时候一定要注意前后两个参数的格式，前后格式必须保持一致，否则会出错。
    sql中临时表
      with temp1 as (sql查询语句),temp2 as (sql查询语句) select * from temp1
@@ -45,7 +45,7 @@
        3.修改字段类型 ：   alter table 表名 modify aaa 字段类型  ;
        4.删除字段 ：          alter table 表名 drop column aaa ；
 
-数据库基础知识（记得看一下数据库的相关锁）：
+数据库基础知识（记得看一下数据库的相关锁，事务）：
 
 sql的优化：
 
