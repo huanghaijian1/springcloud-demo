@@ -314,7 +314,9 @@ rabbitmq可实现流量削峰，限流，分布式事务
     		return BindingBuilder.bind(limitQueue).to(limitExchange);
     	}
     }
-  -分布式事务 rabbitmq实现，redis实现
+  -分布式事务 rabbitmq实现
+  https://blog.csdn.net/mengfanzhundsc/article/details/90813642?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-0&spm=1001.2101.3001.4242
+  https://blog.csdn.net/weixin_42351206/article/details/108546346?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-0&spm=1001.2101.3001.4242
 
 ②Springboot2 + Shiro + Redis + Jwt 前后端分离整合
 

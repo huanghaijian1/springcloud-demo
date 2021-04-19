@@ -57,7 +57,10 @@ eureka:
 #spring.rabbitmq.listener.simple.acknowledge-mode: 表示消息确认方式，其有三种配置方式，分别是none、manual和auto；默认auto
 #spring.rabbitmq.listener.simple.concurrency: 最小的消费者数量
 #spring.rabbitmq.listener.simple.max-concurrency: 最大的消费者数量
-#spring.rabbitmq.listener.simple.prefetch: 每个消费者上未确认的最大消息数。一个消费者最多可处理的nack消息数量，如果有事务的话，必须大于等于transaction数量.
+#spring.rabbitmq.listener.simple.prefetch:
+    # 等于1时，当前服务的消费者处理完一个消息后，才能从消息队列获取消息消费
+    # 每个消费者上未确认的最大消息数。一个消费者最多可处理的nack消息数量，
+    # 如果有事务的话，必须大于等于transaction数量.
 #spring.rabbitmq.listener.simple.transaction-size: 过时-当ack模式为auto时，一个事务（ack间）处理的消息数量，最好是小于等于prefetch的数量.若大于prefetch， 则prefetch将增加到这个值
 #spring.rabbitmq.listener.simple.default-requeue-rejected: 决定被拒绝的消息是否重新入队；默认是true（与参数acknowledge-mode有关系）
 #spring.rabbitmq.listener.simple.missing-queues-fatal=true 若容器声明的队列在代理上不可用，是否失败； 或者运行时一个多多个队列被删除，是否停止容器
