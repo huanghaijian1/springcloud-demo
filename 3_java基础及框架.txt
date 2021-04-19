@@ -82,7 +82,9 @@
         里面的ZkClientExt为自定义的类，继承自ZkClient
         //创建zk
         protected ZkClient zkClient = new ZkClient(ZK_ADDR, SESSION_TIMEOUT)
-
+        redis分布式锁，其实需要自己不断去尝试获取锁，比较消耗性能
+        zookeeper分布式锁，获取不到锁，注册个监听器即可，不需要不断主动尝试获取锁，性能开销较小
+        另外一点就是，如果是redis获取锁的那个客户端bug了或者挂了，那么只能等待超时时间之后才能释放锁；而zk的话，因为创建的是临时znode，只要客户端挂了，znode就没了，此时就自动释放锁
    -各种线程池的用法以及其原理（深入了解）
             https://www.jianshu.com/p/f030aa5d7a28
             https://blog.csdn.net/javazejian/article/details/77410889
