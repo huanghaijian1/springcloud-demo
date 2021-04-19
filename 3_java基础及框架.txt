@@ -238,10 +238,83 @@
     7、异常是不是被你catch住了
 2.springboot+rabbitMq、Springboot2 + Shiro + Redis + Jwt 前后端分离整合、定时任务调度_spring quartz
 ①springboot+rabbitMq
-简单实用：https://blog.csdn.net/typ1805/article/details/82835318
+简单使用：https://blog.csdn.net/typ1805/article/details/82835318
+          https://blog.csdn.net/qq_35387940/article/details/100514134
 面试题：https://zhuanlan.zhihu.com/p/139918749
 综合：https://www.cnblogs.com/ithushuai/p/12443460.html
 rabbitmq可实现流量削峰，限流，分布式事务
+ -直型交换机DirectExchange，扇形交换机FanoutExchange，主题交换机TopicExchange
+ -配置确认回调 要在配置文件先配置对应属性才生效
+  找到交换机找不到队列，ConfirmCallback，ReturnCallback回调都会触发
+  交换机队列都找不到，都找得到（消息推送成功），找不到交换机：只触发ConfirmCallback
+  生产者：（消费者的看https://blog.csdn.net/qq_35387940/article/details/100514134）
+  @Configuration
+  public class RabbitConfig {
+      @Bean
+      public RabbitTemplate createRabbitTemplate(ConnectionFactory connectionFactory){
+          RabbitTemplate rabbitTemplate = new RabbitTemplate();
+          rabbitTemplate.setConnectionFactory(connectionFactory);
+          //设置开启Mandatory,才能触发回调函数,无论消息推送结果怎么样都强制调用回调函数
+          rabbitTemplate.setMandatory(true);
+          rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
+              @Override
+              public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+                  System.out.println("ConfirmCallback:     "+"相关数据："+correlationData);
+                  System.out.println("ConfirmCallback:     "+"确认情况："+ack);
+                  System.out.println("ConfirmCallback:     "+"原因："+cause);
+              }
+          });
+          rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+              @Override
+              public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+                  System.out.println("ReturnCallback:     "+"消息："+message);
+                  System.out.println("ReturnCallback:     "+"回应码："+replyCode);
+                  System.out.println("ReturnCallback:     "+"回应信息："+replyText);
+                  System.out.println("ReturnCallback:     "+"交换机："+exchange);
+                  System.out.println("ReturnCallback:     "+"路由键："+routingKey);
+              }
+          });
+          return rabbitTemplate;
+      }
+  }
+  -多生产者多消费者（生产方法多写几个，消费方法多写几个就是多生产者多消费者）
+    默认情况下，RabbitMQ会将每个消息依次发送给下一个消费者，每个消费者收到的消息数量其实是一样的，
+    我们把这种分发消息的方式称为轮训分发模式。
+    负载均衡分发消息
+  -流量削峰，限流
+    @Configuration
+    public class RabbitMqConfiguration {
+    	/*
+    	 * 削峰限流
+    	 */
+    	@Bean
+    	public Queue limitQueue() {
+    		//设置队列的初始化参数
+    		Map<String, Object> map = new HashMap<String, Object>();
+    		//指定消息队列的长度
+    		map.put("x-max-length", 100);
+    		//当队列满时，多余的消息直接拒绝接收，多余的消息被丢弃
+    		map.put("x-overflow", "reject-publish");
+    		/*
+    		 * 参数1：队列的名字
+    		 * 参数2：是否为持久队列，及时rabbitmq服务停机，之后在开机该队列也存在  一般队列默认都是持久的
+    		 * 参数3：是否为排他队列，是否只能由自己可见（admin），其他用户看不到该队列
+    		 * 参数4：是否在不适用该队列是删除该队列
+    		 * 参数5：队列初始化的参数
+    		 */
+    		return new Queue("limit_queue",true,false,false,map);
+    		//return new Queue("limit_queue");
+    	}
+    	@Bean
+    	public FanoutExchange limitExchange() {
+    		return new FanoutExchange("limit_exchange");
+    	}
+    	@Bean
+    	public Binding bindingLimitQueueToLimitExchange(Queue limitQueue,FanoutExchange limitExchange) {
+    		return BindingBuilder.bind(limitQueue).to(limitExchange);
+    	}
+    }
+  -分布式事务 rabbitmq实现，redis实现
 
 ②Springboot2 + Shiro + Redis + Jwt 前后端分离整合
 
