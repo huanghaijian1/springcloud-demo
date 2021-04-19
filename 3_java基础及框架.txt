@@ -237,7 +237,7 @@
     6、检查是不是同一个类中的方法调用（如a方法调用同一个类中的b方法）
     7、异常是不是被你catch住了
 2.springboot+rabbitMq、Springboot2 + Shiro + Redis + Jwt 前后端分离整合、定时任务调度_spring quartz
-①springboot+rabbitMq
+①springboot+rabbitMq(相关配置参数看portalserver-demo配置文件)
 简单使用：https://blog.csdn.net/typ1805/article/details/82835318
           https://blog.csdn.net/qq_35387940/article/details/100514134
 面试题：https://zhuanlan.zhihu.com/p/139918749
