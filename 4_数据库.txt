@@ -11,9 +11,23 @@
    日期类函数 to_char(字段名，'yyyy-MM-dd'),yyyy-mm-dd为格式,还有yyyy-MM-dd hh:mi:ss、yyyy-MM-dd hh24:mi:ss等
               to_date(字段名，'yyyy-MM-dd')，获取上一个月上一年上一天的日期函数是什么
               注意：在转化为DATE类型的时候一定要注意前后两个参数的格式，前后格式必须保持一致，否则会出错。
+
    sql中临时表
      with temp1 as (sql查询语句),temp2 as (sql查询语句) select * from temp1
-   关键字：distinct,union all 前后两条sql结果集全部合并/union 前后两条sql结果集合并,值一样的只显示一条
+   关键字：distinct, union all 前后两条sql结果集全部合并 / union 前后两条sql结果集合并,值一样的只显示一条
+           in与not in,exists与not exists（外层结果集很大时最好不要使用not exists，甚至exists）
+             如果查询的两个表大小相当，那么用in和exists差别不大；如果两个表中一个较小一个较大，则子查询表大的用exists，子查询表小的用in；
+               select * from A where cc in(select cc from B)　　-->效率低，用到了A表上cc列的索引；A.length*B.length次遍历
+               select * from A where exists(select cc from B where cc=A.cc)　　-->效率高，用到了B表上cc列的索引。A.length次查询数据库
+               因为in()是在内存里遍历比较，而exists()需要查询数据库，我们都知道查询数据库所消耗的性能更高，而内存比较很快。
+             无论哪个表大，用not exists都比not in 要快。
+               查询语句使用了not in，那么对内外表都进行全表扫描，没有用到索引；而not exists的子查询依然能用到表上的索引。所以无论哪个表大，用not exists都比not in 要快。
+               select b.XSSFBS,b.xm,a.* from temp a
+                   left join T_JW_XJGL_XSJBXX b on b.xh=a.xh
+                   left join temp2 c on a.xjydxx_id=c.xjydxx_id
+                   where c.xjydxx_id is null -- 左连接代替not exists 代替 not in 范例
+                 -- select b.XSSFBS,b.xm,a.* from temp a left join T_JW_XJGL_XSJBXX b on b.xh=a.xh
+                 -- where not exists (select 1 from temp2 b where a.xjydxx_id=b.xjydxx_id)
    order by 字段名 desc/asc nulls last/first
    sql语句执行效率问题：where 字句的顺序，in/exist的选择，涉及到数据量很多的表一般必须要建索引（where字句的列）
    破坏索引的情况要注意，尽量避免用子查询
@@ -47,7 +61,8 @@
 
 数据库基础知识（记得看一下数据库的相关锁，事务）：
 
-sql的优化：
+sql的优化（防止索引无效）：
+   1.!=、<>、 in 、not in都会走索引,or连接的前后两个条件中的列都是索引时，也会走索引
 
 索引：
 
