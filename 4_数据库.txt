@@ -60,11 +60,11 @@
        4.删除字段 ：          alter table 表名 drop column aaa ；
 
 数据库基础知识（记得看一下数据库的相关锁，事务）：
+https://blog.csdn.net/qq_35642036/article/details/89554721
 
-sql的优化（防止索引无效）：
-   1.!=、<>、 in 、not in都会走索引,or连接的前后两个条件中的列都是索引时，也会走索引
+sql的优化（防止索引无效）：https://www.cnblogs.com/woxbwo/p/11538080.html
 
-索引：
+索引：主键索引，唯一索引，单例索引（普通索引）
 
 
 redis的面试题
