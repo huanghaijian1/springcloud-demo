@@ -61,12 +61,11 @@
 
 数据库基础知识（记得看一下数据库的相关锁，事务）：
 https://blog.csdn.net/qq_35642036/article/details/89554721
-
+事务隔离级别-锁情况
+https://www.cnblogs.com/liuleicode/p/5796642.html?utm_source=debugrun&utm_medium=referral
 sql的优化（防止索引无效）：https://www.cnblogs.com/woxbwo/p/11538080.html
 
 索引：主键索引，唯一索引，单例索引（普通索引）
 
-
-redis的面试题
 
 
