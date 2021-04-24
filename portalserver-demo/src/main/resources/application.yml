@@ -20,7 +20,7 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-1.基础信息
+#1.基础信息
 #spring.rabbitmq.host: 默认localhost
 #spring.rabbitmq.port: 默认5672
 #spring.rabbitmq.username: 用户名
