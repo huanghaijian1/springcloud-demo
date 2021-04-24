@@ -1,0 +1,23 @@
+1.group by 的优化
+     -后面字段加索引
+     -group by后面有一个静态排序，可以在这方面进行优化
+  order by优化  后面字段加索引
+
+2.在 select 前面加指定关键字，能知道sql执行那里慢了（定位及优化SQL语句的性能问题）
+  https://blog.csdn.net/w372426096/article/details/82421378
+  explain+sql语句
+
+3.springcloud alibaba 代替 springcloud Netflix，详细补一下springcloud alibaba，也看一下另一个注册中心consul
+  -https://www.cnblogs.com/jwen1994/p/14448148.html
+  -springcloud alibaba nacos
+  -https://blog.csdn.net/forezp/article/details/90142744?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-1&spm=1001.2101.3001.4242
+  -springcloud alibaba的入门
+      -https://blog.csdn.net/L_limo/article/details/108832811
+
+4.elasticsearch,简称es;
+
+
+5.synchronized底层是怎么实现的，
+
+6.线程的状态有哪些，不止我知道的那几个
+  等待-sleep(),wait(),join() 超时等待-sleep(long),wait(long),join(long)
