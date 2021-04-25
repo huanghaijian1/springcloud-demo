@@ -7,22 +7,38 @@
   https://blog.csdn.net/w372426096/article/details/82421378
   explain+sql语句
 
-3.synchronized底层是怎么实现的，
+3.synchronized底层是怎么实现的
 
 4.线程的状态有哪些，不止我知道的那几个
   等待-sleep(),wait(),join() 超时等待-sleep(long),wait(long),join(long)
 
 5.springcloud alibaba 代替 springcloud Netflix，详细补一下springcloud alibaba，也看一下另一个注册中心consul
-  -https://www.cnblogs.com/jwen1994/p/14448148.html
-  -springcloud alibaba nacos
-  -https://blog.csdn.net/forezp/article/details/90142744?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-1&spm=1001.2101.3001.4242
+  -https://blog.csdn.net/ron03129596/article/details/109019400  nacos配置中心
   -springcloud alibaba的入门
       -https://blog.csdn.net/L_limo/article/details/108832811
+      nacos = 注册中心 + 配置中心 + ribbon
 
 6.elasticsearch,简称es;
-
+学习博客：
+https://www.cnblogs.com/sunsky303/p/9438737.html
+https://cloud.tencent.com/developer/article/1573013
 
 
 7.微服务中的登录方法-先看一下中大教务系统的登录
+*********在中大工作时优先学习这个*********
+其它可以回来学
+笔记：
+
+
+
+8.redis面试题
+https://www.cnblogs.com/jasontec/p/9699242.html
+
+9.消息队列kafka的学习
+
+10.linux基本命令
+
+
+11.docker的学习
 
 
