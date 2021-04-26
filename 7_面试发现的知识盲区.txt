@@ -33,6 +33,7 @@ https://cloud.tencent.com/developer/article/1573013
 
 8.redis面试题
 https://www.cnblogs.com/jasontec/p/9699242.html
+redis常见命令：https://blog.csdn.net/ithomer/article/details/9213185/
 
 9.消息队列kafka的学习
 
