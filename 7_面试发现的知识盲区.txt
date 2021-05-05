@@ -49,15 +49,10 @@ https://cloud.tencent.com/developer/article/1573013
   在线用户表：id，账号登录名，用户类型，用名真实姓名，登录机器ip，登录时间，电脑版本，浏览器类型，是否在线
  并将用户账号添加到redis sorted set类型的集合里 zadd命令 redisTemplate.opsForZSet().add("currentUserIdList", onlUserNumber, nowtime);
 
-
-
-
 -登出操作，把在线用户表信息设为不在线，并redisTemplate.opsForZSet().remove("currentUserIdList", onlUserNumber);
-
-
 -定时器，每30分钟清理在线用户，修改T_JW_XTGL_ZXYHXX.SFZX='1'改为0（redis存在的用户id不清楚）
 
-
+-分布式项目登录后用户信息保存在哪里？？？？
 
 8.redis面试题
 https://www.cnblogs.com/jasontec/p/9699242.html
