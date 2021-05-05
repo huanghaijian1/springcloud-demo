@@ -64,6 +64,9 @@ https://www.cnblogs.com/jasontec/p/9699242.html
 redis常见命令：https://blog.csdn.net/ithomer/article/details/9213185/
 
 9.消息队列kafka的学习
+https://www.cnblogs.com/fishpro/p/12784514.html
+https://blog.csdn.net/oschina_40730821/article/details/108619389
+
 
 10.linux基本命令
 
