@@ -52,7 +52,16 @@ https://cloud.tencent.com/developer/article/1573013
 -登出操作，把在线用户表信息设为不在线，并redisTemplate.opsForZSet().remove("currentUserIdList", onlUserNumber);
 -定时器，每30分钟清理在线用户，修改T_JW_XTGL_ZXYHXX.SFZX='1'改为0（redis存在的用户id不清楚）
 
--分布式项目登录后用户信息保存在哪里？？？？
+-分布式项目登录后用户信息保存在哪里
+spring session通过redis存储，实现session共享 maven引入spring-session-data-redis，spring session就与redis实现了整合
+启动时要有@EnableRedisHttpSession才生效，可写在要共享的服务的启动类上，同时该服务要连接对应redis
+但我们这里是封装好的在maven引入对应依赖com.ly.education education-session与spring-session-data-redis即可。
+request.getSession(false)?是什么意思？？？
+ request.getSession(true)：若该request存在会话则返回该会话，否则新建一个会话。
+ request.getSession(false)：若该request存在会话则返回该会话，否则返回null
+
+-登录后请求如何鉴权
+ 在网关的自定义过滤器做权限校验，通过当前请求url与用户信息里的权限uri列表做对比，相关数据权限在其他服务上处理
 
 8.redis面试题
 https://www.cnblogs.com/jasontec/p/9699242.html
